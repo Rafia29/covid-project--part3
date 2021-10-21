@@ -37,7 +37,7 @@ get.data <- function() {
 }
 
 # Build User-Interface for Shiny app
-my.ui <-
+ui <-
   shinyUI(fluidPage(
     titlePanel(
       h1("Attaining Herd Immunity Tracking against COVID-19 in Bangladesh", align = 'center')
