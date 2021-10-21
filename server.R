@@ -1,6 +1,6 @@
-bangladesh
 
-my.server <- function(input, output) {
+
+server <- function(input, output) {
   combined.bangladesh <- reactive({
     invalidateLater(1000 * 60 * 60 * 24)
     get.data()
