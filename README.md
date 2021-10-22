@@ -1,4 +1,4 @@
-# covid Project-Final Part
+# Covid Project-Final Part
 Herd immunity occurs when a large portion of a community (the herd) becomes immune to a disease, making the spread of disease from person to person unlikely. As a result, the whole community becomes protected — not just those who are immune.
 There are two main paths to herd immunity for COVID-19 — infection and vaccines.
 
@@ -18,9 +18,10 @@ Vaccines train our immune systems to create proteins that fight disease, known a
                 The proportion of the population that must be vaccinated against COVID-19 to begin inducing herd immunity is not known. This is an important area of research and will likely vary according to the community, the vaccine, the populations prioritized for vaccination, and other factors.
              
  
- Mathematical models can project how infectious diseases progress to show the likely outcome of an epidemic and help inform public health interventions. Models use basic assumptions or collected statistics along with mathematics to find parameters for various infectious diseases and use those parameters to calculate the effects of different interventions, like mass vaccination programmes. The modelling can help decide which intervention(s) to avoid and which to trial, or can predict future growth patterns, etc. The SIR model is One of them.  
- In order to attain herd immunity, here I have considered the SIR model with dynamic changes in vaccination rate  
- ### SIR Model
+ Mathematical models can project how infectious diseases progress to show the likely outcome of an epidemic and help inform public health interventions. Models use basic assumptions or collected statistics along with mathematics to find parameters for various infectious diseases and use those parameters to calculate the effects of different interventions, like mass vaccination programmes. The modelling can help decide which intervention(s) to avoid and which to trial, or can predict future growth patterns, etc. The SIR model is one of them.  
+
+In order to attain herd immunity against covid-19, here I have considered the SIR model with dynamic changes. 
+ ## SIR Model
  
 The Susceptible-Infected-Recovered/Removed (__SIR__) model is a very basic model in Epidemiology to predict the spread of an infectious disease. The susceptible compartment consists of people who are vulnerable to the disease, and in the case of Covid-19, it is the entire population except those who have gained immunity after recovering. The basic SIR model calculates the rate of susceptibility, rate of infected, rate of removed (recovered + dead) by considering the solution of the function where Y<sub>t</sub><sup>I</sup> and Y<sub>t</sub><sup>R</sup> (proportions of infected and removed state at time t) follows a Beta-Dirichlet state-space model (BDSSM). A fourth-order approximation is then applied to the solution. The differential equations governing the model are:
 
