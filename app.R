@@ -70,7 +70,8 @@ ui <- dashboardPage(
                 Here I have conducted the SIR Model in order to gain herd immunity against Covid-19.The details about SIR model is given in README.md. Since the vaccination rate is too low at this point and we are way too much behind attaining herd immunity,but vaccination process is still ongoing throughout the country and we are supposed to vaccinated majority of the population within a very short term. 
                 This is a dynamic shiny app showing how increasing vaccination will lead us to attain herd immunity. 
                 According to this statistics, herd immunity level is below 20% which is very low. This suggested us how much we are lagging behind in order to gain our desired immunity against covid. We need to focus on more people to be vaccinated so that the transmission reduces and recovery icreases.There are many things we aren't considering like inclusion of new variant, new wave, demographic changes, hospitalization and so on. 
-                We are considering how can we attain herd immunity if current situation of vaccination process remain continuous using the SIR model.",
+                We are considering how can we attain herd immunity if current situation of vaccination process remain continuous using the SIR model. 
+                Users are allow to change basic reproductive number, infected at outbreak,Proportion vaccinated (%),Vaccine effectiveness (%),Infection period (days),Time frame (days)",
                                                                                                                                                  
                            
                
