@@ -1,54 +1,92 @@
-#Attaining Herd Immunity Against COVID-19 in Bangladesh
+#
+# Find out more about building applications with Shiny here:
+#
+#    http://shiny.rstudio.com/
+# ATTAINING COVID-19 HERD IMMUNITY IN BANGLADESH 
 
-# load packages
-library(shiny)
-library(shinydashboard)
-library(readr)
-library(dplyr)
-library(zoo)
-library(ggplot2)
-library(scales)
+#Libraries
+library("shiny")
+library("deSolve")
+library("cowplot")
+library("ggplot2")
+library("tidyverse")
+library("ggrepel")
+library("shinydashboard")
 
-get.data <- function() {
-  # Scrapes vaccination and COVID-19 data from respective github repositories
-  
-  # Returns:
-  # A dataframe containing data for Bangladesh
-  vaccine.url <-
-    'https://raw.githubusercontent.com/govex/COVID-19/master/data_tables/vaccine_data/global_data/time_series_covid19_vaccine_global.csv'
-  vaccine.global <- read_csv(vaccine.url)
-  vaccine.bangladesh <-
-    vaccine.global %>% filter(Country_Region == 'Bangladesh') %>% select(Date, People_partially_vaccinated, People_fully_vaccinated)
-  vaccine.date <- as.character(vaccine.bangladesh[['Date']])
-  covid.url <-
-    'https://raw.githubusercontent.com/datasets/covid-19/main/data/time-series-19-covid-combined.csv'
-  covid.global <- read.csv(covid.url)
-  covid.bangladesh <-
-    covid.global %>% filter(Country.Region == 'Bangladesh') %>% select(Date, Confirmed, Deaths)
-  covid.bangladesh <-
-    covid.bangladesh %>% mutate(Daily.Cases = diff(zoo(Confirmed), na.pad = TRUE))
-  covid.bangladesh <-
-    covid.bangladesh %>% mutate(Daily.Deaths = diff(zoo(Deaths), na.pad = TRUE))
-  covid.bangladesh <- covid.bangladesh %>% filter(Date %in% vaccine.date)
-  combined.bangladesh <- cbind(vaccine.bangladesh, covid.bangladesh)
-  combined.bangladesh[['Date']] <- NULL
-  combined.bangladesh[['Date']] <- as.Date(combined.bangladesh[['Date']])
-  return(combined.bangladesh)
+## Create an SIR function
+sir <- function(time, state, parameters) {
+  with(as.list(c(state, parameters)), {
+    dS <- -beta * S * I
+    dI <-  beta * S * I - gamma * I
+    dR <-                 gamma * I
+    dV <- 0
+    return(list(c(dS, dI, dR, dV)))
+  })
 }
 
-# Build User-Interface for Shiny app
-ui <-
-  shinyUI(fluidPage(
-    titlePanel(
-      h1("Attaining Herd Immunity Tracking against COVID-19 in Bangladesh", align = 'center')
-    
+# Define UI for application that draws a histogram
+ui <- dashboardPage(
+  dashboardHeader(disable = TRUE),
+  dashboardSidebar(
+    sliderInput("connum",
+      "Basic reproductive number (R0, # persons):",
+      min = .5, max = 20, value = 5
     ),
-    fluidRow(column(6,
-                    plotOutput(outputId = "plot1")),
-             column(6,
-                    plotOutput(outputId = "plot2"))),
-    fluidRow(column(6,
-                    plotOutput(outputId = "plot3")),
-             column(6,
-                    plotOutput(outputId = "plot4")))
-  ))
+    sliderInput("pinf",
+      "# infected at outbreak:",
+      min = 1, max = 50, value = 2
+    ),
+    sliderInput("pvac",
+      "Proportion vaccinated / immune (%):",
+      min = 0, max = 100, value = 75
+    ),
+    sliderInput("vaceff",
+      "Vaccine effectiveness (%):",
+      min = 0, max = 100, value = 12
+    ),
+    sliderInput("infper",
+      "Infection period (days):",
+      min = 1, max = 30, value = 7
+    ),
+    sliderInput("timeframe",
+      "Time frame (days):",
+      min = 1, max = 400, value = 200
+    )
+    
+  ),
+  dashboardBody(
+    tags$head(tags$style(HTML('
+                              /* body */
+                              .content-wrapper, .right-side {
+                              background-color: #fffff8;
+                              }                              
+                              '))),
+        
+    #    mainPanel(
+
+      tabPanel("About",  
+                h1("Goal"),
+        
+               "The goal of this shiny app to define herd immunity for covid-19.'Herd immunity', also known as 'population immunity', is the indirect protection from an infectious disease that happens when a population is immune either through vaccination or immunity developed through previous infection. WHO supports achieving 'herd immunity' through vaccination, not by allowing a disease to spread through any segment of the population, as this would result in unnecessary cases and deaths.
+                Herd immunity against COVID-19 should be achieved by protecting people through vaccination, not by exposing them to the pathogen that causes the disease.
+                Total population is 166,822,384 among which 19,332,082 people are fully vaccinated which is about 11.7% till 10/22/2021 . 
+               We set basic reproductive number,Ro(persons) ranges from 0.5 to 20 and infected at outbreak ranges from 0 to maximum 50. Sice the vaccination rate is too low at this point and we are way too much lacking behid attaing herd immunity, vaccination process is still ongoing throughout the country and we are supposed to vaccinated majority of the population within a very short term. This is an dynamic shiny app showing how increasing vaccination will lead us to attain herd immunity considering effictiveness of vaccination 100%.",
+                                                                                                                                                                      
+                           
+               
+    br(),
+               
+    fluidRow(plotOutput("distPlot")),
+    br(),
+    fluidRow(
+      # Dynamic valueBoxes
+      valueBoxOutput("progressBox", width = 6),
+      valueBoxOutput("approvalBox", width = 6),
+      valueBoxOutput("BRRBox", width = 6),
+      valueBoxOutput("HIBox", width = 6)
+    ),
+    br(),
+    br()
+  )
+))
+
