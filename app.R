@@ -37,11 +37,11 @@ ui <- dashboardPage(
     ),
     sliderInput("pvac",
       "Proportion vaccinated / immune (%):",
-      min = 0, max = 100, value = 75
+      min = 0, max = 100, value = 11
     ),
     sliderInput("vaceff",
       "Vaccine effectiveness (%):",
-      min = 0, max = 100, value = 12
+      min = 0, max = 100, value = 80
     ),
     sliderInput("infper",
       "Infection period (days):",
@@ -67,7 +67,9 @@ ui <- dashboardPage(
                "The goal of this shiny app is to define herd immunity for covid-19.'Herd immunity', also known as 'population immunity', is the indirect protection from an infectious disease that happens when a population is immune either through vaccination or immunity developed through previous infection. WHO supports achieving 'herd immunity' through vaccination, not by allowing a disease to spread through any segment of the population, as this would result in unnecessary cases and deaths.
                 Herd immunity against COVID-19 should be achieved by protecting people through vaccination, not by exposing them to the pathogen that causes the disease.For building my shiny app I have considered recent covid data from Bangladesh.
                 Total population of Bangladesh is 166,822,384 among which 19,332,082 people are fully vaccinated which is about 11.7% till 10/22/2021(updated online). 
-              Here I have conducted the SIR Model in order to gain herd immunity against Covid-19.The details about SIR model is given in README.md. Since the vaccination rate is too low at this point and we are way too much behid attaing herd immunity,but vaccination process is still ongoing throughout the country and we are supposed to vaccinated majority of the population within a very short term. This is an dynamic shiny app showing how increasing vaccination will lead us to attain herd immunity. According to this statistics, herd immunity level is below 20% which is very low. This suggested us how much we are lagging behid in order to gain our desired immunity against covid. We need to focus on more people to be vaccinated so that the transmission reduces and increases recovery.There are many things we aren't considering like inclusion of new variant, new wave, demographic changes, hospitalization and so on. We are considering how can we attain herd immunity if current situation of vaccination process and effectiveness of vaccines  remain constant using the SIR model.",
+                Here I have conducted the SIR Model in order to gain herd immunity against Covid-19.The details about SIR model is given in README.md. Since the vaccination rate is too low at this point and we are way too much behid attaing herd immunity,but vaccination process is still ongoing throughout the country and we are supposed to vaccinated majority of the population within a very short term. This is an dynamic shiny app showing how increasing vaccination will lead us to attain herd immunity. 
+                According to this statistics, herd immunity level is below 20% which is very low. This suggested us how much we are lagging behind in order to gain our desired immunity against covid. We need to focus on more people to be vaccinated so that the transmission reduces and increases recovery.There are many things we aren't considering like inclusion of new variant, new wave, demographic changes, hospitalization and so on. 
+                We are considering how can we attain herd immunity if current situation if vaccination process and effectiveness of vaccines remain constant using the SIR model.",
                                                                                                                                                  
                            
                
@@ -90,7 +92,7 @@ ui <- dashboardPage(
 # Define server logic required to draw a histogram
 server <- function(input, output) {
   # Create reactive input
-  popsize <- 21741090 #Population of Dhaka, Bangladesh
+  popsize <- 166822384 #Population of Bangladesh
   dataInput <- reactive({
     init       <-
       c(
